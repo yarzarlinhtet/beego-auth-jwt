@@ -6,7 +6,6 @@ import (
 	"auth-api/service"
 	"encoding/json"
 	"fmt"
-	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -57,11 +56,10 @@ func (c *AuthController) ApiLogin() {
 	if err != nil {
 		fmt.Println("testing : " + err.Error())
 	}
-	o := orm.NewOrm()
 
 	user.Username = credential.Username
 
-	err = o.Read(&user, "Username")
+	err = user.Read("Username")
 
 	if err != nil {
 		//c.Ctx.Output.SetStatus(422)
@@ -79,6 +77,6 @@ func (c *AuthController) ApiLogin() {
 
 	}
 
-	c.ApiResponse(422, map[string]interface{}{"data": map[string]interface{}{"apikey": jwtService.GenerateToken(user.Username, true)}, "message": "Username or password invalid!"})
+	c.ApiResponse(422, map[string]interface{}{"data": map[string]interface{}{"apikey": jwtService.GenerateToken(user.Username, true)}, "message": "Success"})
 
 }
