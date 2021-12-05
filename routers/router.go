@@ -9,17 +9,19 @@ package routers
 
 import (
 	"auth-api/controllers"
+	"auth-api/middleware"
 	beego "github.com/beego/beego/v2/server/web"
 )
 
 func init() {
-	ns := beego.NewNamespace("/v1",
+	ns := beego.NewNamespace("/api/v1",
 		//beego.NSNamespace("/object",
 		//	beego.NSInclude(
 		//		&controllers.ObjectController{},
 		//	),
 		//),
 		beego.NSNamespace("/user",
+			beego.NSBefore(middleware.ApiAuthFilter),
 			beego.NSInclude(
 				&controllers.UserController{},
 			),
